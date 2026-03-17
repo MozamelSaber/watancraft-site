@@ -323,6 +323,7 @@ img {
 .hero-card-overlay {
   margin: -88px 18px 18px;
   position: relative;
+  text-align: center;
   padding: 18px 20px;
   border-radius: 24px;
   background: rgba(0, 0, 0, 0.42);
@@ -437,6 +438,143 @@ img {
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
 }
+
+.discord-role-section {
+  margin-top: 40px;
+  padding: 24px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.discord-role-head {
+  margin-bottom: 18px;
+}
+
+.discord-role-head h3 {
+  margin: 0 0 6px;
+  font-size: 1.2rem;
+}
+
+.discord-role-head p {
+  margin: 0;
+  opacity: 0.75;
+  font-size: 0.95rem;
+}
+
+.discord-role-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.discord-role-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+#recognized .team-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 18px;
+  align-items: start;
+}
+
+#recognized .team-card {
+  padding: 16px 12px;
+  min-height: 190px;
+  max-width: none;
+  border-radius: 24px;
+}
+
+#recognized .team-avatar {
+  width: 88px;
+  height: 88px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+#recognized .team-role {
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+#recognized .team-card h3 {
+  font-size: 16px;
+  line-height: 1.3;
+  margin: 0;
+  word-break: break-word;
+}
+
+#recognized .section-head p {
+  margin-bottom: 26px;
+}
+
+@media (max-width: 1200px) {
+  #recognized .team-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  #recognized .team-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  #recognized .team-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #recognized .team-card {
+    min-height: 170px;
+    padding: 14px 10px;
+  }
+
+  #recognized .team-avatar {
+    width: 76px;
+    height: 76px;
+  }
+
+  #recognized .team-card h3 {
+    font-size: 15px;
+  }
+}
+.discord-role-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.discord-role-info {
+  min-width: 0;
+}
+
+.discord-role-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1.2;
+}
+
+.discord-role-username {
+  font-size: 0.82rem;
+  opacity: 0.7;
+  margin-top: 2px;
+  word-break: break-word;
+}
+
+.discord-role-status {
+  opacity: 0.8;
+  font-size: 0.95rem;
+}
+
 .team-avatar {
   width: 180px;
   height: 180px;
