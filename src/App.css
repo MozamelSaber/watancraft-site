@@ -330,7 +330,13 @@ img {
   border: 1px solid rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(12px);
 }
+.season-page-back {
+  margin-bottom: 20px;
+}
 
+.season-gallery-header {
+  margin-bottom: 24px;
+}
 .overlay-label {
   font-size: 13px;
   color: rgba(255, 244, 224, 0.65);

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Routes, Route, Link, useParams } from "react-router-dom";
 import "./App.css";
 
 const DISCORD_ROLE_API =
@@ -8,8 +9,9 @@ const RECOGNIZED_ROLE_ID = "1470843290307006588";
 const HIDDEN_USERS = [
   "1175892534812221454",
   "868364926002036776",
-  "917410857695211540"
+  "917410857695211540",
 ];
+
 type DiscordRoleMember = {
   id: string;
   name: string;
@@ -20,39 +22,43 @@ type DiscordRoleResponse = {
   count: number;
   members: DiscordRoleMember[];
 };
+
 const seasons = [
   {
+    id: "1",
     title: "فصل ۱",
     subtitle: "شروع افسانه‌ وطن کرفت",
     description:
         "اولین فصل وطن‌کرفت با بیلد های عظیم، خانه های بازیکنان، پرچم افغانستان و خاطراتی که هویت سرور را ساخت.",
-    download: "#",
     status: "آماده دانلود به زودی",
     image: "/Season_1_1.png",
     tags: ["بیس ها", "اولین سپاون", "بیلد های تاریخی"],
     buttonText: "مشاهده‌ی فصل",
+    link: "/season/1",
   },
   {
+    id: "2",
     title: "فصل ۲",
     subtitle: "ماجراجویی جدید",
     description:
         "فصل جدید وطن‌کرفت با شروع تازه، دنیای جدید، عملکرد بهتر و فضای جدید برای ساختن خاطرات بیشتر.",
-    download: "https://discord.com/invite/f6YE5Fd3HG",
     status: "به زودی",
     image: "/Season_2_1.jpg",
     tags: ["شروع تازه", "عملکرد بهتر", "آرشیو جدید"],
     buttonText: "ورود به فصل ۲",
+    link: "https://discord.com/invite/f6YE5Fd3HG",
   },
   {
+    id: "future",
     title: "فصل‌های آینده",
     subtitle: "تاریخ در حال ساخت",
     description:
         "فصل های آینده سروایول وطن کرفت در اینجا اضافه خواهد شد. منتظر خاطرات آینده خواهیم بود",
-    download: "#",
     status: "آینده وطن کرفت",
     image: "/SeasonX.png",
     tags: ["قابل گسترش", "دانلود مستقیم"],
-    buttonText: "به‌زودی",
+    buttonText: "به ‌زودی",
+    link: "#",
   },
 ];
 
@@ -88,6 +94,21 @@ const showcases = [
     image: "/Season_1_7.png",
   },
 ];
+
+const seasonGalleries: Record<
+    string,
+    {
+      title: string;
+      subtitle: string;
+      images: { image: string; title: string; text: string }[];
+    }
+> = {
+  "1": {
+    title: "گالری فصل ۱",
+    subtitle: "تمام تصاویر منتخب و خاطره‌انگیز فصل اول وطن‌کرفت",
+    images: showcases,
+  },
+};
 
 const downloads = [
   {
@@ -324,9 +345,21 @@ function Seasons() {
                     </span>
                       ))}
                     </div>
-                    <a className="btn btn-primary full" href={season.download}>
-                      {season.buttonText}
-                    </a>
+
+                    {season.id === "1" ? (
+                        <Link className="btn btn-primary full" to={season.link}>
+                          {season.buttonText}
+                        </Link>
+                    ) : (
+                        <a
+                            className="btn btn-primary full"
+                            href={season.link}
+                            target={season.link.startsWith("http") ? "_blank" : undefined}
+                            rel={season.link.startsWith("http") ? "noreferrer" : undefined}
+                        >
+                          {season.buttonText}
+                        </a>
+                    )}
                   </div>
                 </article>
             ))}
@@ -343,9 +376,7 @@ function Showcase() {
           <div className="section-head">
             <div className="section-pill">گالری</div>
             <h2>نمایی از حال و هوای فصل ۱</h2>
-            <p>
-              نمایش بهترین اسکرین‌شات‌های فصل اول
-            </p>
+            <p>نمایش بهترین اسکرین‌شات‌های فصل اول</p>
           </div>
 
           <div className="showcase-grid">
@@ -372,9 +403,7 @@ function Downloads() {
             <div className="section-head left">
               <div className="section-pill">دانلودها</div>
               <h2>لینک دانلود مستقیم برای هر فصل</h2>
-              <p>
-                بخش دانلود رسمی فصل‌هاوگالری وطن کرفت
-              </p>
+              <p>بخش دانلود رسمی فصل‌هاوگالری وطن کرفت</p>
             </div>
 
             <div className="download-list">
@@ -406,9 +435,7 @@ function Rules() {
           <div className="section-head left narrow">
             <div className="section-pill">قوانین</div>
             <h2>قوانین سرور و دیسکورد</h2>
-            <p>
-              قوانین مهم برای همه‌ اعضای وطن کرفت.
-            </p>
+            <p>قوانین مهم برای همه‌ اعضای وطن کرفت.</p>
             <div className="rules-note">
               مسئولیت آگاهی از قوانین و رعایت آن‌ها بر عهده‌ی خود شماست و در صورت
               تخلف ممکن است وارن، تایم‌اوت یا بن اعمال شود.
@@ -598,7 +625,7 @@ function Footer() {
   );
 }
 
-export default function App() {
+function HomePage() {
   return (
       <div dir="rtl" className="site-shell">
         <Header />
@@ -611,5 +638,65 @@ export default function App() {
         <RecognizedMembers />
         <Footer />
       </div>
+  );
+}
+
+function SeasonGalleryPage() {
+  const { id } = useParams<{ id: string }>();
+  const season = id ? seasonGalleries[id] : null;
+
+  if (!season) {
+    return (
+        <div dir="rtl" className="site-shell">
+          <div className="wrapper" style={{ padding: "80px 0" }}>
+            <h1>این فصل پیدا نشد</h1>
+            <Link className="btn btn-primary" to="/">
+              بازگشت به صفحه اصلی
+            </Link>
+          </div>
+        </div>
+    );
+  }
+
+  return (
+      <div dir="rtl" className="site-shell">
+        <section className="section">
+          <div className="wrapper">
+            <div style={{ marginBottom: "20px" }}>
+              <Link className="btn btn-secondary" to="/">
+                بازگشت
+              </Link>
+            </div>
+
+            <div className="section-head">
+              <div className="section-pill">گالری فصل</div>
+              <h2>{season.title}</h2>
+              <p>{season.subtitle}</p>
+            </div>
+
+            <div className="showcase-grid">
+              {season.images.map((item) => (
+                  <div className="showcase-card" key={item.title}>
+                    <img src={item.image} alt={item.title} />
+                    <div className="showcase-content">
+                      <h3>{item.title}</h3>
+                      <p>{item.text}</p>
+                    </div>
+                  </div>
+              ))}
+            </div>
+          </div>
+        </section>
+        <Footer />
+      </div>
+  );
+}
+
+export default function App() {
+  return (
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/season/:id" element={<SeasonGalleryPage />} />
+      </Routes>
   );
 }
