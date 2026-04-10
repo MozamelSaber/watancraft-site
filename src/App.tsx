@@ -115,8 +115,8 @@ const downloads = [
     name: "دانلود دنیای فصل ۱",
     detail: "فایل اصلی دنیای فصل ۱ برای آرشیو و بازدید دوباره",
     type: "ZIP / World File",
-    status: "به زودی",
-    link: "#",
+    status: "دانلود",
+    link: "https://www.dropbox.com/scl/fi/ewenuycu1qt1ohhwviyxl/WatanCraft-Season-1.zip?rlkey=g7o638mlk39awokim3wnk1bg2&e=2&st=m814xglx&dl=1",
   },
   {
     name: "گالری فصل ۱",
