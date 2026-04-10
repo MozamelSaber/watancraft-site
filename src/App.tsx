@@ -30,7 +30,7 @@ const seasons = [
     subtitle: "شروع افسانه‌ وطن کرفت",
     description:
         "اولین فصل وطن‌کرفت با بیلد های عظیم، خانه های بازیکنان، پرچم افغانستان و خاطراتی که هویت سرور را ساخت.",
-    status: "آماده دانلود به زودی",
+    status: "آماده دانلود",
     image: "/Season_1_1.png",
     tags: ["بیس ها", "اولین سپاون", "بیلد های تاریخی"],
     buttonText: "مشاهده‌ی فصل",
@@ -417,7 +417,7 @@ function Downloads() {
                       <p>{item.detail}</p>
                     </div>
                     <a className="btn btn-primary" href={item.link}>
-                      به زودی
+                      دانلود
                     </a>
                   </div>
               ))}
