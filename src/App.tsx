@@ -376,7 +376,7 @@ function Showcase() {
           <div className="section-head">
             <div className="section-pill">گالری</div>
             <h2>نمایی از حال و هوای فصل ۱</h2>
-            <p>نمایش بهترین اسکرین‌شات‌های فصل اول</p>
+            <p>نمایش بهترین اسکرین ‌شات‌های فصل اول</p>
           </div>
 
           <div className="showcase-grid">
