@@ -42,8 +42,8 @@ const seasons = [
     subtitle: "ماجراجویی جدید",
     description:
         "فصل جدید وطن‌کرفت با شروع تازه، دنیای جدید، عملکرد بهتر و فضای جدید برای ساختن خاطرات بیشتر.",
-    status: "به زودی",
-    image: "/Season_2_1.jpg",
+    status: "آماده بازی",
+    image: "/Season_2_1.png",
     tags: ["شروع تازه", "عملکرد بهتر", "آرشیو جدید"],
     buttonText: "ورود به فصل ۲",
     link: "https://discord.com/invite/f6YE5Fd3HG",
@@ -113,7 +113,7 @@ const seasonGalleries: Record<
 const downloads = [
   {
     name: "دانلود دنیای فصل ۱",
-    detail: "فایل اصلی دنیای فصل ۱ برای آرشیو و بازدید دوباره",
+    detail: "همرای رسورسپک فایل اصلی دنیای فصل ۱ برای آرشیو و بازدید دوباره",
     type: "ZIP / World File",
     status: "دانلود",
     link: "https://www.dropbox.com/scl/fi/ewenuycu1qt1ohhwviyxl/WatanCraft-Season-1.zip?rlkey=g7o638mlk39awokim3wnk1bg2&e=2&st=m814xglx&dl=1",
@@ -123,7 +123,7 @@ const downloads = [
     detail: "مجموعه تصاویر و نماهای منتخب از فصل ۱",
     type: "Image Gallery",
     status: "به زودی",
-    link: "#",
+    link: "https://www.dropbox.com/scl/fi/58t9r3yneqgajr7rfpb2o/Season-1-Gallery.zip?rlkey=djex3ioig2kr8r9qh7gohnlbl&st=n02dqjuc&dl=1",
   },
 ];
 
@@ -316,7 +316,7 @@ function Seasons() {
         <div className="wrapper">
           <div className="section-head">
             <div className="section-pill">فصل‌ها</div>
-            <h2>همه‌ فصل‌های وطن‌کرفت در یک جا</h2>
+            <h2>همه‌ فصل‌های وطن‌ کرفت در یک جا</h2>
             <p>
               همه فصل‌های وطن‌کرفت در یک جا گردآوری شده‌اند؛ جایی برای مرور خاطرات،
               دیدن بهترین سازه‌ها، تصاویر منتخب و دسترسی به دانلود هر فصل.
