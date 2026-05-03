@@ -42,8 +42,8 @@ const seasons = [
     subtitle: "ماجراجویی جدید",
     description:
         "فصل جدید وطن‌کرفت با شروع تازه، دنیای جدید، عملکرد بهتر و فضای جدید برای ساختن خاطرات بیشتر.",
-    status: "به زودی",
-    image: "/Season_2_1.jpg",
+    status: "آماده بازی",
+    image: "/Season_2_1.png",
     tags: ["شروع تازه", "عملکرد بهتر", "آرشیو جدید"],
     buttonText: "ورود به فصل ۲",
     link: "https://discord.com/invite/f6YE5Fd3HG",
@@ -113,17 +113,17 @@ const seasonGalleries: Record<
 const downloads = [
   {
     name: "دانلود دنیای فصل ۱",
-    detail: "فایل اصلی دنیای فصل ۱ برای آرشیو و بازدید دوباره",
+    detail: "فایل اصلی دنیای فصل ۱ برای آرشیو و بازدید دوباره همرای رسورسپک",
     type: "ZIP / World File",
     status: "دانلود",
     link: "https://www.dropbox.com/scl/fi/ewenuycu1qt1ohhwviyxl/WatanCraft-Season-1.zip?rlkey=g7o638mlk39awokim3wnk1bg2&e=2&st=m814xglx&dl=1",
   },
   {
     name: "گالری فصل ۱",
-    detail: "مجموعه تصاویر و نماهای منتخب از فصل ۱",
+    detail: "مجموعه تصاویر و نماهای از فصل ۱",
     type: "Image Gallery",
-    status: "به زودی",
-    link: "#",
+    status: "دانلود",
+    link: "https://www.dropbox.com/scl/fi/58t9r3yneqgajr7rfpb2o/Season-1-Gallery.zip?rlkey=djex3ioig2kr8r9qh7gohnlbl&st=n02dqjuc&dl=1",
   },
 ];
 
@@ -215,13 +215,13 @@ function Header() {
           <a href="#hero" className="brand">
             <div className="brand-mark">W</div>
             <div>
-              <div className="brand-title">وطن‌کرفت</div>
+              <div className="brand-title">وطن‌ کرفت</div>
               <div className="brand-subtitle">آرشیو رسمی فصل‌ها</div>
             </div>
           </a>
 
           <nav className="nav">
-            <a href="#seasons">فصل‌ها</a>
+            <a href="#seasons">فصل‌ ها</a>
             <a href="#showcase">گالری</a>
             <a href="#downloads">دانلودها</a>
             <a href="#rules">قوانین</a>
@@ -316,7 +316,7 @@ function Seasons() {
         <div className="wrapper">
           <div className="section-head">
             <div className="section-pill">فصل‌ها</div>
-            <h2>همه‌ فصل‌های وطن‌کرفت در یک جا</h2>
+            <h2>همه‌ فصل‌های وطن‌ کرفت در یک جا</h2>
             <p>
               همه فصل‌های وطن‌کرفت در یک جا گردآوری شده‌اند؛ جایی برای مرور خاطرات،
               دیدن بهترین سازه‌ها، تصاویر منتخب و دسترسی به دانلود هر فصل.
@@ -437,7 +437,7 @@ function Rules() {
             <h2>قوانین سرور و دیسکورد</h2>
             <p>قوانین مهم برای همه‌ اعضای وطن کرفت.</p>
             <div className="rules-note">
-              مسئولیت آگاهی از قوانین و رعایت آن‌ها بر عهده‌ی خود شماست و در صورت
+              مسئولیت آگاهی از قوانین و رعایت آن‌ها بر عهده‌ خود شماست و در صورت
               تخلف ممکن است وارن، تایم‌اوت یا بن اعمال شود.
             </div>
           </div>
@@ -594,7 +594,7 @@ function Footer() {
       <footer className="footer">
         <div className="wrapper footer-inner">
           <div>
-            <div className="footer-title">وطن‌کرفت</div>
+            <div className="footer-title">وطن‌ کرفت</div>
             <div className="footer-text">اولین و تنها سرور ماینکرفت افغانستان</div>
             <div className="footer-flag-row">
               <FlagPill />
