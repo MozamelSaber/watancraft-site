@@ -22,3 +22,8 @@ button:focus-visible,a:focus-visible,summary:focus-visible{outline-color:#ffb82e
 /* Lift hero artwork so the Afghan flag and upper castle remain visible. */
 .hero-photo{top:-180px;height:calc(100% + 180px);object-fit:cover;object-position:58% 0%}
 @media(max-width:700px){.hero-photo{top:-110px;height:calc(100% + 110px);object-position:60% 0%}}
+
+/* Flag-first hero crop: preserve the TOP of the original 1920×1080 photo.
+   The former negative offset cropped out the flag. */
+.hero .hero-photo{inset:0;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:50% 0%;transform:none}
+@media(max-width:700px){.hero .hero-photo{inset:0;top:0;width:100%;height:100%;object-position:60% 0%}}
