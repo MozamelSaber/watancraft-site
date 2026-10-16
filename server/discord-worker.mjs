@@ -1,5 +1,5 @@
 // Deploy on the existing Cloudflare Worker, not GitHub Pages.
-// Required secrets/config: DISCORD_BOT_TOKEN, DISCORD_GUILD_ID.
+// Required secrets/config: DISCORD_TOKEN, GUILD_ID.
 // STAFF_IDS is an optional JSON override; verified IDs are configured below.
 // Public responses contain only the fields used by the website.
 const ROLE = '1470843290307006588';
@@ -11,8 +11,6 @@ export const STAFF_IDS = Object.freeze({
  Madisa: '1530227842816806973',
 });
 const STAFF = Object.keys(STAFF_IDS);
-const HIDDEN = new Set(['1175892534812221454','868364926002036776','917410857695211540']);
-const ORIGINS = new Set(['https://watancraft.fun','https://www.watancraft.fun','https://mozamelsaber.github.io']);
 const snowflake = value => typeof value === 'string' && /^\d{17,20}$/.test(value);
 export function avatar(member, guildId) {
  const user = member.user;
@@ -24,12 +22,12 @@ export function avatar(member, guildId) {
 function publicMember(member, guildId, key) {
  return {id:member.user.id, name:member.nick || member.user.global_name || member.user.username, avatar:avatar(member,guildId), ...(key ? {key} : {})};
 }
-export async function roleMembers(api, guildId) {
+export async function roleMembers(api, guildId, roleId = ROLE) {
  let after='0'; const found=[];
  for(let page=0;page<100;page++) {
   const members=await api(`/guilds/${guildId}/members?limit=1000&after=${after}`);
   if(!Array.isArray(members))throw Error('Invalid Discord response');
-  for(const m of members)if(m.roles?.includes(ROLE) && !HIDDEN.has(m.user.id))found.push(publicMember(m,guildId));
+  for(const m of members)if(m.roles?.includes(roleId))found.push(publicMember(m,guildId));
   if(members.length<1000)return found;
   const next=members[members.length-1].user.id;
   if(BigInt(next)<=BigInt(after))throw Error('Pagination did not advance');
@@ -39,22 +37,23 @@ export async function roleMembers(api, guildId) {
 }
 export default {
  async fetch(request,env,ctx) {
-  const origin=request.headers.get('Origin');
-  const headers={'Content-Type':'application/json; charset=utf-8','Vary':'Origin','X-Content-Type-Options':'nosniff'};
-  if(origin && !ORIGINS.has(origin))return new Response('Origin not allowed',{status:403});
-  if(origin)headers['Access-Control-Allow-Origin']=origin;
+  const headers={'Content-Type':'application/json; charset=utf-8','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'GET, OPTIONS','Access-Control-Allow-Headers':'Content-Type','X-Content-Type-Options':'nosniff'};
   if(request.method==='OPTIONS')return new Response(null,{status:204,headers:{...headers,'Access-Control-Allow-Methods':'GET, OPTIONS'}});
   if(request.method!=='GET')return new Response('Method not allowed',{status:405,headers});
   const path=new URL(request.url).pathname.replace(/\/$/,'');
-  if(path!=='/staff'&&path!==`/${ROLE}`)return new Response('Not found',{status:404,headers});
   const reply=(body,status=200)=>new Response(JSON.stringify(body),{status,headers});
-  if(!env.DISCORD_BOT_TOKEN||!snowflake(env.DISCORD_GUILD_ID))return reply({error:'Discord integration is not configured'},503);
+  if(!path)return reply({status:'ok',message:'Add /ROLE_ID for role members or /staff for staff avatars.'});
+  const roleId=path.slice(1);
+  if(path!=='/staff'&&!snowflake(roleId))return reply({error:'Not found'},404);
+  const token=env.DISCORD_TOKEN || env.DISCORD_BOT_TOKEN;
+  const guildId=env.GUILD_ID || env.DISCORD_GUILD_ID;
+  if(!token||!snowflake(guildId))return reply({error:'Set DISCORD_TOKEN and GUILD_ID in Worker settings'},503);
   const cache=globalThis.caches?.default;
   const cacheKey=new Request(new URL(path,request.url).href);
   const cached=await cache?.match(cacheKey);
   if(cached){const response=new Response(cached.body,cached);Object.entries(headers).forEach(([k,v])=>response.headers.set(k,v));return response;}
   const api=async path=>{
-   const result=await fetch(`https://discord.com/api/v10${path}`,{headers:{Authorization:`Bot ${env.DISCORD_BOT_TOKEN}`},signal:AbortSignal.timeout(10000)});
+   const result=await fetch(`https://discord.com/api/v10${path}`,{headers:{Authorization:`Bot ${token}`},signal:AbortSignal.timeout(10000)});
    if(!result.ok)throw Error(`Discord status ${result.status}`);
    return result.json();
   };
@@ -64,8 +63,8 @@ export default {
     const ids=env.STAFF_IDS ? JSON.parse(env.STAFF_IDS) : STAFF_IDS;
     if(!STAFF.every(key=>snowflake(ids[key])))return reply({error:'Staff Discord IDs must be configured'},503);
     members=[];
-    for(const key of STAFF)members.push(publicMember(await api(`/guilds/${env.DISCORD_GUILD_ID}/members/${ids[key]}`),env.DISCORD_GUILD_ID,key));
-   } else members=await roleMembers(api,env.DISCORD_GUILD_ID);
+    for(const key of STAFF)members.push(publicMember(await api(`/guilds/${guildId}/members/${ids[key]}`),guildId,key));
+   } else members=await roleMembers(api,guildId,roleId);
    const response=reply({count:members.length,members});
    response.headers.set('Cache-Control','public, max-age=300');
    if(cache){const stored=response.clone();stored.headers.delete('Access-Control-Allow-Origin');stored.headers.delete('Vary');ctx.waitUntil(cache.put(cacheKey,stored));}

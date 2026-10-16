@@ -24,14 +24,14 @@ The existing `watancraft.fun` custom domain uses root-relative assets. For hosti
 
 This version requests `/staff` on the existing Worker and keeps the existing photos as fallbacks if Discord is unavailable. The five staff Discord user IDs supplied by the owner are configured in `server/discord-worker.mjs`. Ali is now displayed as MompAli (Senior Admin). **Live avatars will not activate until the Worker is deployed with its bot token and guild ID.** Identity is matched by Discord ID, never guessed from display names.
 
-1. Deploy `server/discord-worker.mjs` to the existing `purple-rice-956f.mozamelsaber.workers.dev` Cloudflare Worker. The existing Worker source is not in this repository; review and preserve any unrelated routes before replacing it.
-2. Set the Worker secret `DISCORD_BOT_TOKEN` to the bot token. Never place a bot token in the frontend or commit it.
-3. Set `DISCORD_GUILD_ID` to the Discord server ID.
+1. Deploy `server/discord-worker.mjs` to the existing `purple-rice-956f.mozamelsaber.workers.dev` Cloudflare Worker. This is merged with the supplied S1 ranks Worker interface: the root health check, CORS, existing `/<ROLE_ID>` URLs, response fields, and environment variable names are preserved. Paste the entire file into the same Worker and deploy.
+2. Keep the existing Worker secret `DISCORD_TOKEN`. Never place a bot token in the frontend or commit it.
+3. Keep the existing `GUILD_ID` server ID.
 4. Staff IDs are already configured (see table below). No `STAFF_IDS` environment variable is needed. If an old `STAFF_IDS` variable exists, remove it to use the configured defaults, or update it with the exact keys shown below.
 5. Enable the bot's Server Members Intent for the Season 1 role-member list. The bot must belong to the guild.
 6. Verify `/staff` and `/1470843290307006588` return HTTP 200. Check the deployed site's avatars and hall of fame.
 
-The Worker keeps the existing role endpoint, scans all guild member pages, preserves the prior hidden-user list, prefers server-specific avatars, falls back to account/default avatars, and caches successful responses for five minutes. Only public display fields are returned. Allowlisted browser origins are in `server/discord-worker.mjs`.
+The Worker keeps the existing role endpoint, scans all guild member pages, prefers server-specific avatars, falls back to account/default avatars, and caches successful responses for five minutes. Only public display fields are returned. The original public CORS policy is preserved. The website continues to apply its existing hidden-user list to the Season 1 display; the Worker returns all matching role members, as before.
 
 Discord references: https://docs.discord.com/developers/resources/guild and https://docs.discord.com/developers/reference#image-formatting
 
