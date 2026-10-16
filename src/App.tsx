@@ -1,688 +1,77 @@
-import { useEffect, useState } from "react";
-import { Routes, Route, Link, useParams } from "react-router-dom";
-import "./App.css";
+import { useEffect, useRef, useState } from 'react';
+import { ArrowUpRight, ArrowRight, ArrowDown, Copy, Check, Menu, X, ChevronLeft, ChevronRight, Download, Shield, Globe2, Blocks, ExternalLink } from 'lucide-react';
+import photos from './gallery.json';
+import './App.css';
 
-const DISCORD_ROLE_API =
-    "https://purple-rice-956f.mozamelsaber.workers.dev";
-
-const RECOGNIZED_ROLE_ID = "1470843290307006588";
-const HIDDEN_USERS = [
-  "1175892534812221454",
-  "868364926002036776",
-  "917410857695211540",
+const DISCORD = 'https://discord.com/invite/f6YE5Fd3HG';
+const API = 'https://purple-rice-956f.mozamelsaber.workers.dev';
+const WORLD = 'https://www.dropbox.com/scl/fi/ewenuycu1qt1ohhwviyxl/WatanCraft-Season-1.zip?rlkey=g7o638mlk39awokim3wnk1bg2&e=2&st=m814xglx&dl=1';
+const ARCHIVE = 'https://www.dropbox.com/scl/fi/58t9r3yneqgajr7rfpb2o/Season-1-Gallery.zip?rlkey=djex3ioig2kr8r9qh7gohnlbl&st=n02dqjuc&dl=1';
+const staff = [
+  {name:'TuraChi', role:'Owner & Developer', image:'Turachi.png', text:'The vision. The world. The code.', link:'https://www.youtube.com/@TuraChi'},
+  {name:'Zako', role:'Co-owner', image:'Zako.png', text:'Helping the community thrive.', link:DISCORD},
+  {name:'Ali', role:'Senior Admin', image:'Ali.png', text:'Here from the foundations.', link:'https://youtube.com/@itzrealace'},
+  {name:'MrRubik', role:'Senior Admin', image:'MrRubik.jpg', text:'Keeping the adventure on track.', link:DISCORD},
+  {name:'Madisa', role:'Game Master', image:'Madisa.png', text:'Making room for a little more fun.', link:DISCORD},
 ];
-
-type DiscordRoleMember = {
-  id: string;
-  name: string;
-  avatar: string;
-};
-
-type DiscordRoleResponse = {
-  count: number;
-  members: DiscordRoleMember[];
-};
-
-const seasons = [
-  {
-    id: "1",
-    title: "فصل ۱",
-    subtitle: "شروع افسانه‌ وطن کرفت",
-    description:
-        "اولین فصل وطن‌کرفت با بیلد های عظیم، خانه های بازیکنان، پرچم افغانستان و خاطراتی که هویت سرور را ساخت.",
-    status: "آماده دانلود",
-    image: "/Season_1_1.png",
-    tags: ["بیس ها", "اولین سپاون", "بیلد های تاریخی"],
-    buttonText: "مشاهده‌ی فصل",
-    link: "/season/1",
-  },
-  {
-    id: "2",
-    title: "فصل ۲",
-    subtitle: "ماجراجویی جدید",
-    description:
-        "فصل جدید وطن‌کرفت با شروع تازه، دنیای جدید، عملکرد بهتر و فضای جدید برای ساختن خاطرات بیشتر.",
-    status: "آماده بازی",
-    image: "/Season_2_1.png",
-    tags: ["شروع تازه", "عملکرد بهتر", "آرشیو جدید"],
-    buttonText: "ورود به فصل ۲",
-    link: "https://discord.com/invite/f6YE5Fd3HG",
-  },
-  {
-    id: "future",
-    title: "فصل‌های آینده",
-    subtitle: "تاریخ در حال ساخت",
-    description:
-        "فصل های آینده سروایول وطن کرفت در اینجا اضافه خواهد شد. منتظر خاطرات آینده خواهیم بود",
-    status: "آینده وطن کرفت",
-    image: "/SeasonX.png",
-    tags: ["قابل گسترش", "دانلود مستقیم"],
-    buttonText: "به ‌زودی",
-    link: "#",
-  },
-];
-
-const showcases = [
-  {
-    title: "اژدهای غروب",
-    text: "یکی از معروفترین صحنه‌های فصل ۱ با نور طلایی و ساخت عظیم اژدها.",
-    image: "/Season_1_2.png",
-  },
-  {
-    title: "منطقه‌ بیرق افغانستان",
-    text: "هویت افغانستان باید در سایت هم حس شود؛ درست مثل دنیای سرور.",
-    image: "/Season_1_3.png",
-  },
-  {
-    title: "شهر و شاپ ‌ها",
-    text: "نمایی از معماری، جاده‌ها، شاپ ها و فضای پرجزئیات وطن‌کرفت.",
-    image: "/Season_1_4.png",
-  },
-  {
-    title: "رودخانه و مجسمه‌ها",
-    text: "ترکیب طبیعت، نور، آب و سازه‌های هنری که فصل ۱ را خاص کرد.",
-    image: "/Season_1_5.png",
-  },
-  {
-    title: "اسپاون و مسیرها",
-    text: "فضای سرور حس زنده، ماجراجویانه و پرانرژی داشت.",
-    image: "/Season_1_6.png",
-  },
-  {
-    title: "نمای اسپاون وطن کرفت",
-    text: "یک تصویری از ارینا ها در اسپاون.",
-    image: "/Season_1_7.png",
-  },
-];
-
-const seasonGalleries: Record<
-    string,
-    {
-      title: string;
-      subtitle: string;
-      images: { image: string; title: string; text: string }[];
-    }
-> = {
-  "1": {
-    title: "گالری فصل ۱",
-    subtitle: "تمام تصاویر منتخب و خاطره‌انگیز فصل اول وطن‌کرفت",
-    images: showcases,
-  },
-};
-
-const downloads = [
-  {
-    name: "دانلود دنیای فصل ۱",
-    detail: "فایل اصلی دنیای فصل ۱ برای آرشیو و بازدید دوباره همرای رسورسپک",
-    type: "ZIP / World File",
-    status: "دانلود",
-    link: "https://www.dropbox.com/scl/fi/ewenuycu1qt1ohhwviyxl/WatanCraft-Season-1.zip?rlkey=g7o638mlk39awokim3wnk1bg2&e=2&st=m814xglx&dl=1",
-  },
-  {
-    name: "گالری فصل ۱",
-    detail: "مجموعه تصاویر و نماهای از فصل ۱",
-    type: "Image Gallery",
-    status: "دانلود",
-    link: "https://www.dropbox.com/scl/fi/58t9r3yneqgajr7rfpb2o/Season-1-Gallery.zip?rlkey=djex3ioig2kr8r9qh7gohnlbl&st=n02dqjuc&dl=1",
-  },
-];
-
+type Member = {id:string; name:string; avatar:string; key?:string};
+const hidden = ['1175892534812221454','868364926002036776','917410857695211540'];
 const rules = [
-  "بی‌احترامی، توهین، تبعیض و آزار دیگران ممنوع است.",
-  "دزدی، خرابکاری و برداشتن وسایل دیگران بدون اجازه ممنوع است.",
-  "استفاده از هرگونه چیت، هک یا نرم‌افزار تقلبی ممنوع است.",
-  "اسپم، پیام‌های تکراری و پینگ بی‌دلیل ممنوع است.",
-  "نژادپرستی، زورگویی و تهدید دیگران ممنوع است.",
-  "ارسال محتوای +۱۸ یا پروفایل نامناسب ممنوع است.",
-  "اسکم، فریبکاری و سوءاستفاده از کاربران ممنوع است.",
-  "استفاده از باگ یا گلیچ سرور ممنوع است و باید گزارش شود.",
+ ['Respect every player','No insults, discrimination, or harassment. Treat people with respect.'],
+ ['Protect what others build','No stealing, griefing, or taking items without permission.'],
+ ['Play fair','No cheats, hacks, or unfair third-party tools.'],
+ ['Keep the chat enjoyable','No spam, repeated messages, or unnecessary pings.'],
+ ['Make everyone feel welcome','No racism, bullying, or threats.'],
+ ['Keep it appropriate','No adult content or inappropriate profiles.'],
+ ['Trade honestly','No scams, deception, or taking advantage of other players.'],
+ ['Report bugs. Don’t exploit them.','Report glitches to staff instead of using them for an advantage.'],
 ];
-
-const team = [
-  {
-    name: "Zako",
-    role: "کو-اونر",
-    text: "از مدیران اصلی وطن‌کرفت",
-    link: "https://discord.com/invite/f6YE5Fd3HG",
-    avatar: "/Zako.png",
-  },
-  {
-    name: "TuraChi",
-    role: "اونر",
-    text: "تو ره چی؟ او خواهرک",
-    link: "https://www.youtube.com/@TuraChi",
-    avatar: "/Turachi.png",
-  },
-  {
-    name: "Samira",
-    role: "قاضی",
-    text: "ناظر بی‌طرف در تصمیم‌گیری‌های مهم وطن‌کرفت که در تعیین سیاست‌ها و نظارت بر عملکرد دولت نقش دارد.",
-    link: "https://discord.com/invite/f6YE5Fd3HG",
-    avatar: "/iSamo.jpg",
-  },
-  {
-    name: "Ali",
-    role: "مدیر ارشد",
-    text: "از جمله بنیان گذاران سرور وطن کرفت",
-    link: "https://youtube.com/@itzrealace?si=rkavGl3sM6dPOxWj",
-    avatar: "/Ali.png",
-  },
-  {
-    name: "Madisa",
-    role: "گیم ماستر",
-    text: "مسئول مدیریت رویدادها، چالش‌ها و بازی ها در وطن‌کرفت.",
-    link: "https://www.instagram.com/mohammed_afg.25?igsh=MXNsYWwwbXRmNGdnZg==",
-    avatar: "/Madisa.png",
-  },
-  {
-    name: "MrRubik",
-    role: "مدیر ارشد",
-    text: "شخصی که فضای سرور و دیسکورد را امن، فعال و منظم نگه می‌دارد.",
-    link: "https://discord.com/invite/f6YE5Fd3HG",
-    avatar: "/MrRubik.jpg",
-  },
-];
-
-function FlagPill() {
-  return (
-      <div className="flag-pill">
-        <span className="flag-dot black"></span>
-        <span className="flag-dot red"></span>
-        <span className="flag-dot green"></span>
-        <span className="flag-label">افغانستان</span>
-      </div>
-  );
-}
-
-function Header() {
-  return (
-      <header className="topbar">
-        <div className="wrapper topbar-inner">
-          <a href="#hero" className="brand">
-            <div className="brand-mark">W</div>
-            <div>
-              <div className="brand-title">وطن‌ کرفت</div>
-              <div className="brand-subtitle">آرشیو رسمی فصل‌ها</div>
-            </div>
-          </a>
-
-          <nav className="nav">
-            <a href="#seasons">فصل‌ ها</a>
-            <a href="#showcase">گالری</a>
-            <a href="#downloads">دانلودها</a>
-            <a href="#rules">قوانین</a>
-            <a href="#team">تیم</a>
-            <a href="#recognized">اعضای شناخته‌ شده</a>
-          </nav>
-
-          <a
-              className="cta-small"
-              href="https://discord.com/invite/f6YE5Fd3HG"
-              target="_blank"
-              rel="noreferrer"
-          >
-            ورود به دیسکورد
-          </a>
-        </div>
-      </header>
-  );
-}
-
-function Hero() {
-  return (
-      <section className="hero-section" id="hero">
-        <div className="hero-glow hero-glow-1"></div>
-        <div className="hero-glow hero-glow-2"></div>
-        <div className="hero-glow hero-glow-3"></div>
-        <div className="wrapper hero-grid">
-          <div className="hero-copy">
-            <div className="hero-pill-row">
-              <div className="pill warm">پرانرژی • هیجان‌انگیز • اجتماعی</div>
-              <FlagPill />
-            </div>
-
-            <h1>
-              خانه‌ پررنگ و پرشور <span>وطن کرفت</span>
-            </h1>
-
-            <p className="hero-text">
-              وطن‌کرفت اولین و تنها سرور ماینکرفت افغانستان است. این ویبسایت
-              برای نگهداری فصل‌ها، تصاویر، لینک دانلود دنیاها و نمایش هویت خاص
-              کامیونیتی وطن کرفت ساخته شده است.
-            </p>
-
-            <div className="hero-actions">
-              <a className="btn btn-primary" href="#downloads">
-                دانلود فصل‌ها
-              </a>
-              <a
-                  className="btn btn-secondary"
-                  href="https://discord.com/invite/f6YE5Fd3HG"
-                  target="_blank"
-                  rel="noreferrer"
-              >
-                دریافت وایت لیست
-              </a>
-            </div>
-
-            <div className="hero-stats">
-              <div className="stat-card">
-                <div className="stat-label">آی پی سرور</div>
-                <div className="stat-value">play.watancraft.fun</div>
-              </div>
-              <div className="stat-card">
-                <div className="stat-label">پلتفرم</div>
-                <div className="stat-value">Java & Bedrock</div>
-              </div>
-              <div className="stat-card">
-                <div className="stat-label">عضویت</div>
-                <div className="stat-value">Whitelist</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="hero-visual">
-            <div className="hero-card hero-main-card">
-              <img src="/Logo.png" alt="Watancraft artwork" />
-              <div className="hero-card-overlay">
-                <div className="overlay-title">
-                  وطن کرفت کامیونیتی گیمینگ افغانستان
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-  );
-}
-
-function Seasons() {
-  return (
-      <section className="section" id="seasons">
-        <div className="wrapper">
-          <div className="section-head">
-            <div className="section-pill">فصل‌ها</div>
-            <h2>همه‌ فصل‌های وطن‌ کرفت در یک جا</h2>
-            <p>
-              همه فصل‌های وطن‌کرفت در یک جا گردآوری شده‌اند؛ جایی برای مرور خاطرات،
-              دیدن بهترین سازه‌ها، تصاویر منتخب و دسترسی به دانلود هر فصل.
-            </p>
-          </div>
-
-          <div className="season-grid">
-            {seasons.map((season) => (
-                <article className="season-card" key={season.title}>
-                  <div className="season-image-wrap">
-                    <img
-                        src={season.image}
-                        alt={season.title}
-                        className="season-image"
-                    />
-                    <div className="season-badge">{season.status}</div>
-                  </div>
-                  <div className="season-body">
-                    <div className="season-topline">{season.subtitle}</div>
-                    <h3>{season.title}</h3>
-                    <p>{season.description}</p>
-                    <div className="tag-row">
-                      {season.tags.map((tag) => (
-                          <span className="tag" key={tag}>
-                      {tag}
-                    </span>
-                      ))}
-                    </div>
-
-                    {season.id === "1" ? (
-                        <Link className="btn btn-primary full" to={season.link}>
-                          {season.buttonText}
-                        </Link>
-                    ) : (
-                        <a
-                            className="btn btn-primary full"
-                            href={season.link}
-                            target={season.link.startsWith("http") ? "_blank" : undefined}
-                            rel={season.link.startsWith("http") ? "noreferrer" : undefined}
-                        >
-                          {season.buttonText}
-                        </a>
-                    )}
-                  </div>
-                </article>
-            ))}
-          </div>
-        </div>
-      </section>
-  );
-}
-
-function Showcase() {
-  return (
-      <section className="section section-alt" id="showcase">
-        <div className="wrapper">
-          <div className="section-head">
-            <div className="section-pill">گالری</div>
-            <h2>نمایی از حال و هوای فصل ۱</h2>
-            <p>نمایش بهترین اسکرین‌شات‌های فصل اول</p>
-          </div>
-
-          <div className="showcase-grid">
-            {showcases.map((item) => (
-                <div className="showcase-card" key={item.title}>
-                  <img src={item.image} alt={item.title} />
-                  <div className="showcase-content">
-                    <h3>{item.title}</h3>
-                    <p>{item.text}</p>
-                  </div>
-                </div>
-            ))}
-          </div>
-        </div>
-      </section>
-  );
-}
-
-function Downloads() {
-  return (
-      <section className="section" id="downloads">
-        <div className="wrapper downloads-layout">
-          <div>
-            <div className="section-head left">
-              <div className="section-pill">دانلودها</div>
-              <h2>لینک دانلود مستقیم برای هر فصل</h2>
-              <p>بخش دانلود رسمی فصل‌هاوگالری وطن کرفت</p>
-            </div>
-
-            <div className="download-list">
-              {downloads.map((item) => (
-                  <div className="download-card" key={item.name}>
-                    <div>
-                      <div className="download-title">{item.name}</div>
-                      <div className="download-meta">
-                        {item.type} • {item.status}
-                      </div>
-                      <p>{item.detail}</p>
-                    </div>
-                    <a className="btn btn-primary" href={item.link}>
-                      دانلود
-                    </a>
-                  </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-  );
-}
-
-function Rules() {
-  return (
-      <section className="section section-alt" id="rules">
-        <div className="wrapper rules-layout">
-          <div className="section-head left narrow">
-            <div className="section-pill">قوانین</div>
-            <h2>قوانین سرور و دیسکورد</h2>
-            <p>قوانین مهم برای همه‌ اعضای وطن کرفت.</p>
-            <div className="rules-note">
-              مسئولیت آگاهی از قوانین و رعایت آن‌ها بر عهده‌ خود شماست و در صورت
-              تخلف ممکن است وارن، تایم‌اوت یا بن اعمال شود.
-            </div>
-          </div>
-
-          <div className="rules-card">
-            {rules.map((rule, index) => (
-                <div className="rule-row" key={rule}>
-                  <div className="rule-number">{index + 1}</div>
-                  <div className="rule-text">{rule}</div>
-                </div>
-            ))}
-          </div>
-        </div>
-      </section>
-  );
-}
-
-function Team() {
-  return (
-      <section className="section" id="team">
-        <div className="wrapper">
-          <div className="section-head">
-            <div className="section-pill">تیم</div>
-            <h2>تیم اجرایی وطن‌ کرفت</h2>
-            <p>
-              کامیونیتی وطن‌کرفت توسط افرادی ساخته شده که با عشق و انرژی آن را زنده
-              نگه داشته‌اند.
-            </p>
-          </div>
-
-          <div className="team-grid">
-            {team.map((member) => (
-                <div className="team-card" key={member.name}>
-                  <img
-                      src={member.avatar}
-                      alt={member.name}
-                      className="team-avatar"
-                  />
-                  <div className="team-role">{member.role}</div>
-                  <h3>{member.name}</h3>
-                  <p>{member.text}</p>
-                  <a href={member.link} target="_blank" rel="noreferrer">
-                    مشاهده
-                  </a>
-                </div>
-            ))}
-          </div>
-        </div>
-      </section>
-  );
-}
-
-function RecognizedMembers() {
-  const [members, setMembers] = useState<DiscordRoleMember[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    let cancelled = false;
-
-    async function loadMembers() {
-      try {
-        setLoading(true);
-        setError("");
-
-        const res = await fetch(
-            `${DISCORD_ROLE_API}/${RECOGNIZED_ROLE_ID}?t=${Date.now()}`
-        );
-
-        if (!res.ok) {
-          throw new Error(`HTTP ${res.status}`);
-        }
-
-        const data: DiscordRoleResponse = await res.json();
-
-        if (!cancelled) {
-          const filteredMembers = Array.isArray(data.members)
-              ? data.members.filter((member) => !HIDDEN_USERS.includes(member.id))
-              : [];
-
-          setMembers(filteredMembers);
-        }
-      } catch (err) {
-        if (!cancelled) {
-          setError("دریافت اعضای این رول با مشکل روبه‌رو شد.");
-          console.error("Failed to load recognized members:", err);
-        }
-      } finally {
-        if (!cancelled) {
-          setLoading(false);
-        }
-      }
-    }
-
-    loadMembers();
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  return (
-      <section className="section section-alt" id="recognized">
-        <div className="wrapper">
-          <div className="section-head">
-            <div className="section-pill">اعضای شناخته ‌شده</div>
-            <h2>دارندگان رول ویژه فصل اول</h2>
-            <p>
-              این بخش به‌ صورت مستقیم از دیسکورد خوانده می‌شود و فقط افرادی را
-              نشان می‌دهد که این رول ویژه را دریافت کرده‌اند.
-            </p>
-          </div>
-
-          {loading && (
-              <div className="rules-card" style={{ textAlign: "center" }}>
-                در حال دریافت اعضا...
-              </div>
-          )}
-
-          {error && !loading && (
-              <div className="rules-card" style={{ textAlign: "center" }}>
-                {error}
-              </div>
-          )}
-
-          {!loading && !error && members.length === 0 && (
-              <div className="rules-card" style={{ textAlign: "center" }}>
-                فعلاً عضوی برای این نقش پیدا نشد.
-              </div>
-          )}
-
-          {!loading && !error && members.length > 0 && (
-              <div className="team-grid">
-                {members.map((member) => (
-                    <div className="team-card" key={member.id}>
-                      <img
-                          src={member.avatar}
-                          alt={member.name}
-                          className="team-avatar"
-                      />
-                      <div className="team-role">رول ویژه فصل اول</div>
-                      <h3>{member.name}</h3>
-                    </div>
-                ))}
-              </div>
-          )}
-        </div>
-      </section>
-  );
-}
-
-function Footer() {
-  return (
-      <footer className="footer">
-        <div className="wrapper footer-inner">
-          <div>
-            <div className="footer-title">وطن‌ کرفت</div>
-            <div className="footer-text">اولین و تنها سرور ماینکرفت افغانستان</div>
-            <div className="footer-flag-row">
-              <FlagPill />
-            </div>
-          </div>
-
-          <div className="footer-actions">
-            <a
-                className="btn btn-secondary"
-                href="https://discord.com/invite/f6YE5Fd3HG"
-                target="_blank"
-                rel="noreferrer"
-            >
-              دیسکورد
-            </a>
-            <a
-                className="btn btn-secondary"
-                href="https://www.youtube.com/@TuraChi"
-                target="_blank"
-                rel="noreferrer"
-            >
-              یوتیوب
-            </a>
-            <div className="footer-ip">play.watancraft.fun</div>
-          </div>
-        </div>
-      </footer>
-  );
-}
-
-function HomePage() {
-  return (
-      <div dir="rtl" className="site-shell">
-        <Header />
-        <Hero />
-        <Seasons />
-        <Showcase />
-        <Downloads />
-        <Rules />
-        <Team />
-        <RecognizedMembers />
-        <Footer />
-      </div>
-  );
-}
-
-function SeasonGalleryPage() {
-  const { id } = useParams<{ id: string }>();
-  const season = id ? seasonGalleries[id] : null;
-
-  if (!season) {
-    return (
-        <div dir="rtl" className="site-shell">
-          <div className="wrapper" style={{ padding: "80px 0" }}>
-            <h1>این فصل پیدا نشد</h1>
-            <Link className="btn btn-primary" to="/">
-              بازگشت به صفحه اصلی
-            </Link>
-          </div>
-        </div>
-    );
-  }
-
-  return (
-      <div dir="rtl" className="site-shell">
-        <section className="section">
-          <div className="wrapper">
-            <div style={{ marginBottom: "20px" }}>
-              <Link className="btn btn-secondary" to="/">
-                بازگشت
-              </Link>
-            </div>
-
-            <div className="section-head">
-              <div className="section-pill">گالری فصل</div>
-              <h2>{season.title}</h2>
-              <p>{season.subtitle}</p>
-            </div>
-
-            <div className="showcase-grid">
-              {season.images.map((item) => (
-                  <div className="showcase-card" key={item.title}>
-                    <img src={item.image} alt={item.title} />
-                    <div className="showcase-content">
-                      <h3>{item.title}</h3>
-                      <p>{item.text}</p>
-                    </div>
-                  </div>
-              ))}
-            </div>
-          </div>
-        </section>
-        <Footer />
-      </div>
-  );
-}
-
-export default function App() {
-  return (
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/season/:id" element={<SeasonGalleryPage />} />
-      </Routes>
-  );
+const asset = (path:string) => `${import.meta.env.BASE_URL}${path}`;
+const validAvatar = (url:string) => {try {const u=new URL(url);return u.protocol==='https:' && ['cdn.discordapp.com','media.discordapp.net'].includes(u.hostname);}catch{return false;}};
+function Avatar({src,fallback,name}:{src:string;fallback:string;name:string}) {return <img src={src} alt={`${name}'s avatar`} loading="lazy" onError={e=>{if(e.currentTarget.src!==new URL(fallback,location.href).href)e.currentTarget.src=fallback;}}/>;}
+export default function App(){
+ const [menu,setMenu]=useState(false),[copied,setCopied]=useState(false),[copyFailed,setCopyFailed]=useState(false);
+ const [season,setSeason]=useState(location.pathname.endsWith('/season/1')?1:2),[limit,setLimit]=useState(6);
+ const [lightbox,setLightbox]=useState<number|null>(null);
+ const dialog=useRef<HTMLDialogElement>(null);
+ const [members,setMembers]=useState<Member[]>([]),[memberState,setMemberState]=useState('loading');
+ const [avatars,setAvatars]=useState<Record<string,string>>({});
+ const [retry,setRetry]=useState(0);
+ const gallery=photos.filter(p=>p.season===season);
+ useEffect(()=>{const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),12000);
+  setMemberState('loading');fetch(`${API}/1470843290307006588`,{signal:controller.signal}).then(r=>{if(!r.ok)throw Error();return r.json();}).then(data=>{if(!Array.isArray(data.members))throw Error();setMembers(data.members.filter((m:Member)=>typeof m.id==='string'&&typeof m.name==='string'&&!hidden.includes(m.id)));setMemberState('ready');}).catch(()=>{if(!controller.signal.aborted)setMemberState('error');else setMemberState('error');});
+  return()=>{clearTimeout(timeout);controller.abort();};
+ },[retry]);
+ useEffect(()=>{const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),10000);
+ fetch(`${API}/staff`,{signal:controller.signal}).then(r=>{if(!r.ok)throw Error();return r.json();}).then(data=>{const next:Record<string,string>={};for(const m of data.members||[])if(staff.some(s=>s.name===m.key)&&validAvatar(m.avatar))next[m.key]=m.avatar;setAvatars(next);}).catch(()=>{});return()=>{clearTimeout(timeout);controller.abort();};},[]);
+ useEffect(()=>{if(lightbox!==null){dialog.current?.showModal();document.body.style.overflow='hidden';}else{dialog.current?.close();document.body.style.overflow='';}return()=>{document.body.style.overflow='';};},[lightbox]);
+ useEffect(()=>{if(location.pathname.includes('/season/'))document.getElementById('gallery')?.scrollIntoView();},[]);
+ async function copy(){try{await navigator.clipboard.writeText('play.watancraft.fun');setCopied(true);setCopyFailed(false);setTimeout(()=>setCopied(false),2500);}catch{setCopyFailed(true);}}
+ function chooseSeason(n:number){setSeason(n);setLimit(6);}
+ return <>
+ <a className="skip" href="#main">Skip to content</a>
+ <header className="header"><a className="brand" href="#"><img src={asset('favicon.png')} alt=""/><span>WATAN<span className="green">CRAFT</span><small>BUILT TOGETHER. REMEMBERED FOREVER.</small></span></a>
+ <nav aria-label="Main navigation" className={menu?'nav open':'nav'}><a href="#seasons" onClick={()=>setMenu(false)}>The worlds</a><a href="#gallery" onClick={()=>setMenu(false)}>Gallery</a><a href="#community" onClick={()=>setMenu(false)}>Community</a><a href="#team" onClick={()=>setMenu(false)}>The team</a></nav>
+ <a className="button small nav-join" href={DISCORD} target="_blank" rel="noreferrer">Join Discord <ArrowUpRight size={16}/></a><button className="menu-button" aria-label={menu?'Close menu':'Open menu'} aria-expanded={menu} onClick={()=>setMenu(!menu)}>{menu?<X/>:<Menu/>}</button></header>
+ <main id="main">
+ <section className="hero"><img className="hero-image" src={asset('gallery/s2-039.webp')} alt="WatanCraft's monumental tower and Afghan flag beneath a golden sky" fetchPriority="high"/>
+ <div className="hero-content wrap"><div className="eyebrow"><span className="flag"><i/><i/><i/></span> AFGHAN ROOTS. LIMITLESS WORLDS.</div>
+ <h1>A place to belong.<br/>A world to <em>build.</em></h1><p>Afghanistan’s first and only Minecraft server.<br/>Big ideas, unforgettable builds, and a community that feels like home.</p>
+ <div className="actions"><a className="button" href="#join">Start your adventure <ArrowUpRight size={19}/></a><a className="button ghost" href="#gallery">Explore the world <ArrowRight size={18}/></a></div>
+ <div className="hero-bottom"><span><span className="status-dot"/> SEASON 02 · NOW PLAYING</span><a href="#seasons">SCROLL TO DISCOVER <ArrowDown size={15}/></a></div></div></section>
+ <div className="server-strip"><div className="wrap strip-inner"><button onClick={copy} className="server-address"><span className="tiny">YOUR NEXT DESTINATION</span><strong>play.watancraft.fun</strong>{copied?<Check size={19}/>:<Copy size={19}/>}</button><span className="strip-feature"><Blocks/> Java + Bedrock</span><span className="strip-feature"><Shield/> Whitelist community</span><a href="#join">How to join <ArrowUpRight size={18}/></a></div><div className="sr-only" role="status">{copied?'Server address copied.':copyFailed?'Copy unavailable. Select play.watancraft.fun to copy manually.':''}</div>{copyFailed&&<p className="copy-help">Copy the address manually: <code>play.watancraft.fun</code></p>}</div>
+ <section className="section wrap" id="seasons"><div className="section-top"><div><span className="eyebrow green">01 / THE WORLDS</span><h2>Every season.<br/>A new kind of legendary.</h2></div><p>The worlds change. The memories stay.<br/>Explore where it all began—and what comes next.</p></div>
+ <div className="season-grid"><article className="season-card current"><img src={asset('gallery/s2-000.webp')} alt="Season 2 towers beside a river" loading="lazy"/><div className="season-shade"/><div className="season-card-top"><span className="pill"><span className="status-dot"/> THE CURRENT CHAPTER</span><span className="season-number">02</span></div><div className="season-copy"><span className="eyebrow">A BIGGER CANVAS</span><h3>Think bigger.<br/>Build beyond.</h3><p>From towering skylines to worlds above the clouds. Discover the builds shaping Season 2.</p><a className="text-link" href="#gallery" onClick={()=>chooseSeason(2)}>Explore Season 2 <ArrowUpRight/></a></div></article>
+ <article className="season-card"><img src={asset('Season_1_2.png')} alt="The dragon build from Season 1" loading="lazy"/><div className="season-shade"/><div className="season-card-top"><span className="pill archive">WHERE IT ALL BEGAN</span><span className="season-number">01</span></div><div className="season-copy"><span className="eyebrow">THE ORIGINAL CHAPTER</span><h3>First blocks.<br/>Lasting memories.</h3><p>The first homes, familiar faces, and creations that made WatanCraft a community.</p><a className="text-link" href="#gallery" onClick={()=>chooseSeason(1)}>Revisit Season 1 <ArrowUpRight/></a></div></article></div></section>
+ <section className="gallery-section section" id="gallery"><div className="wrap"><div className="section-top"><div><span className="eyebrow green">02 / THROUGH THE PLAYERS’ EYES</span><h2>Yes, it’s all Minecraft.</h2><p>Real screenshots. Real worlds. A whole lot of imagination.</p></div><div className="tabs" aria-label="Gallery season">{[2,1].map(n=><button key={n} aria-pressed={season===n} onClick={()=>chooseSeason(n)}>Season {n}<span>{photos.filter(p=>p.season===n).length}</span></button>)}</div></div>
+ <div className="gallery-grid">{gallery.slice(0,limit).map((p,i)=><button className="photo" key={p.src} onClick={()=>setLightbox(i)} aria-label={`Open ${p.title}`}><img src={asset(p.thumb)} alt={p.title} loading="lazy" width="720" height="450"/><span className="photo-caption"><span><small>SEASON 0{season}</small>{p.title}</span><ArrowUpRight size={22}/></span></button>)}</div>
+ <div className="gallery-footer"><span>{Math.min(limit,gallery.length)} of {gallery.length} selected moments</span>{limit<gallery.length?<button className="button outline" onClick={()=>setLimit(l=>l+6)}>Discover more <ArrowDown size={17}/></button>:<a className="text-link" href="#gallery" onClick={()=>setLimit(6)}>Back to highlights ↑</a>}</div></div></section>
+ <section className="section wrap archive-section" id="downloads"><div><span className="eyebrow green">KEEP A PIECE OF THE STORY</span><h2>The season ends.<br/>The world doesn’t.</h2><p>Step back into Season 1. Download the Java world and resource pack, or keep the complete photo archive.</p></div><div className="download-list"><a href={WORLD}><span className="download-icon"><Globe2/></span><span><strong>Season 1 world</strong><small>Java world + resource pack · ZIP</small></span><Download/></a><a href={ARCHIVE}><span className="download-icon"><Download/></span><span><strong>Season 1 photo archive</strong><small>The original gallery · ZIP</small></span><ArrowUpRight/></a><p>Season 2 is still being written. Its world download is not available yet.</p></div></section>
+ <section className="community section" id="community"><div className="wrap"><div className="community-intro"><span className="eyebrow green">03 / MORE THAN A SERVER</span><h2>Different players.<br/><span>One WatanCraft.</span></h2><p>A little friendly chaos. A shared love of building.<br/>And always another reason to log back in.</p><a className="text-link" href={DISCORD} target="_blank" rel="noreferrer">Find your people on Discord <ArrowUpRight/></a></div><div className="legacy"><div><span className="eyebrow">THE ORIGINALS</span><h3>Season 1 legends</h3><p>A place for the community members carrying the special Season 1 role.</p></div>{memberState==='loading'?<p role="status" className="notice">Loading the hall of fame…</p>:memberState==='error'?<div className="notice"><p>The hall of fame is temporarily unavailable.</p><button className="text-link" onClick={()=>setRetry(r=>r+1)}>Try again <ArrowRight size={16}/></button></div>:members.length===0?<p className="notice">No Season 1 role holders are available to display yet.</p>:<div className="member-grid">{members.map(m=><div className="member" key={m.id}><Avatar name={m.name} src={validAvatar(m.avatar)?m.avatar:asset('favicon.png')} fallback={asset('favicon.png')}/><span>{m.name}</span></div>)}</div>}</div></div></section>
+ <section className="section wrap" id="team"><div className="section-top"><div><span className="eyebrow green">04 / THE PEOPLE BEHIND THE WORLD</span><h2>Meet the team.</h2></div><p>Keeping the world running.<br/>Keeping the community at its heart.</p></div><div className="team-grid">{staff.map(s=><article className="team-card" key={s.name}><div className="avatar-wrap"><Avatar name={s.name} src={avatars[s.name]||asset(s.image)} fallback={asset(s.image)}/></div><span className="team-role">{s.role}</span><h3>{s.name}</h3><p>{s.text}</p><a href={s.link} target="_blank" rel="noreferrer" aria-label={`${s.name}'s community profile`}><ArrowUpRight size={20}/></a></article>)}</div></section>
+ <section className="section wrap rules-section" id="rules"><div><span className="eyebrow green">A GOOD WORLD STARTS WITH RESPECT</span><h2>Build freely.<br/>Play fairly.</h2><p>A few shared rules keep WatanCraft a place everyone can enjoy.</p><small>Breaking the rules may result in a warning, timeout, or ban. Read the Discord rules before joining.</small></div><div className="rules">{rules.map(([title,body],i)=><details key={title}><summary><span>{String(i+1).padStart(2,'0')}</span>{title}<span className="plus">+</span></summary><p>{body}</p></details>)}</div></section>
+ <section className="join-section" id="join"><img src={asset('gallery/s2-017.webp')} alt="" loading="lazy"/><div className="wrap join-content"><span className="eyebrow">YOUR STORY STARTS HERE</span><h2>There’s a place<br/>for you in this world.</h2><p>Java or Bedrock. Builder or explorer.<br/>Your next chapter is waiting.</p><ol className="join-steps"><li><span>01</span>Join the Discord</li><li><span>02</span>Read the rules & request whitelist</li><li><span>03</span>Get approved & start playing</li></ol><a className="button" href={DISCORD} target="_blank" rel="noreferrer">Join WatanCraft <ArrowUpRight size={19}/></a><p className="join-note">Connection instructions and Bedrock port details are available in Discord.</p></div></section>
+ </main><footer className="wrap footer"><a className="brand" href="#"><img src={asset('favicon.png')} alt=""/><span>WATAN<span className="green">CRAFT</span><small>AFGHAN ROOTS. LIMITLESS WORLDS.</small></span></a><div><a href={DISCORD} target="_blank" rel="noreferrer">Discord <ExternalLink size={14}/></a><a href="https://www.youtube.com/@TuraChi" target="_blank" rel="noreferrer">YouTube <ExternalLink size={14}/></a><a href="#rules">Server rules</a></div><div className="footer-bottom"><span>© {new Date().getFullYear()} WatanCraft. Built with pride.</span><span>Not affiliated with Mojang or Microsoft.</span></div></footer>
+ <dialog ref={dialog} className="lightbox" aria-label="Screenshot viewer" onCancel={()=>setLightbox(null)} onClick={e=>{if(e.target===e.currentTarget)setLightbox(null);}} onKeyDown={e=>{if(e.key==='ArrowRight')setLightbox(i=>i===null?null:(i+1)%gallery.length);if(e.key==='ArrowLeft')setLightbox(i=>i===null?null:(i-1+gallery.length)%gallery.length);}}>{lightbox!==null&&<><button className="close-lightbox" onClick={()=>setLightbox(null)} aria-label="Close screenshot"><X/></button><img src={asset(gallery[lightbox].src)} alt={gallery[lightbox].title}/><div className="lightbox-controls"><button onClick={()=>setLightbox((lightbox-1+gallery.length)%gallery.length)} aria-label="Previous screenshot"><ChevronLeft/></button><span>{gallery[lightbox].title}<small>{lightbox+1} / {gallery.length} · SEASON {season}</small></span><button onClick={()=>setLightbox((lightbox+1)%gallery.length)} aria-label="Next screenshot"><ChevronRight/></button></div></>}</dialog>
+ </>;
 }
