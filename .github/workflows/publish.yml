@@ -1,0 +1,36 @@
+name: Build and publish WatanCraft
+on:
+  push:
+    branches: [main, premium-redesign-check]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: watancraft-pages-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  website:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Build website
+        run: npm run build
+      - name: Test Discord integration
+        run: npm run test:discord
+      - name: Publish built website
+        if: github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./dist
+          cname: watancraft.fun

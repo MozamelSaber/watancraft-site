@@ -1,212 +1,394 @@
 [
   {
+    "season": 2,
+    "src": "gallery/s2-23.webp",
+    "thumb": "gallery/s2-23-thumb.webp",
+    "title": "Afghan pride in stone",
+    "alt": "Afghan pride in stone"
+  },
+  {
+    "season": 2,
+    "src": "gallery/s2-14.webp",
+    "thumb": "gallery/s2-14-thumb.webp",
+    "title": "Golden hour at the capital",
+    "alt": "Golden hour at the capital"
+  },
+  {
+    "season": 2,
+    "src": "gallery/s2-13.webp",
+    "thumb": "gallery/s2-13-thumb.webp",
+    "title": "Guardian under the blue sky",
+    "alt": "Guardian under the blue sky"
+  },
+  {
+    "season": 2,
+    "src": "gallery/s2-10.webp",
+    "thumb": "gallery/s2-10-thumb.webp",
+    "title": "A kingdom inspired by the East",
+    "alt": "A kingdom inspired by the East"
+  },
+  {
+    "season": 2,
+    "src": "gallery/s2-08.webp",
+    "thumb": "gallery/s2-08-thumb.webp",
+    "title": "Temple on the cliffs",
+    "alt": "Temple on the cliffs"
+  },
+  {
+    "season": 2,
+    "src": "gallery/s2-19.webp",
+    "thumb": "gallery/s2-19-thumb.webp",
+    "title": "The glowing night guardian",
+    "alt": "The glowing night guardian"
+  },
+  {
+    "season": 2,
+    "src": "gallery/s2-04.webp",
+    "thumb": "gallery/s2-04-thumb.webp",
+    "title": "The frozen lookout",
+    "alt": "The frozen lookout"
+  },
+  {
+    "season": 2,
+    "src": "gallery/s2-21.webp",
+    "thumb": "gallery/s2-21-thumb.webp",
+    "title": "Explorers of Season 2",
+    "alt": "Explorers of Season 2"
+  },
+  {
+    "season": 2,
+    "src": "gallery/s2-17.webp",
+    "thumb": "gallery/s2-17-thumb.webp",
+    "title": "The capital gardens",
+    "alt": "The capital gardens"
+  },
+  {
+    "season": 2,
+    "src": "gallery/s2-09.webp",
+    "thumb": "gallery/s2-09-thumb.webp",
+    "title": "The stone sentinel",
+    "alt": "The stone sentinel"
+  },
+  {
+    "season": 2,
+    "src": "gallery/s2-07.webp",
+    "thumb": "gallery/s2-07-thumb.webp",
+    "title": "Palace above the clouds",
+    "alt": "Palace above the clouds"
+  },
+  {
+    "season": 2,
+    "src": "gallery/s2-12.webp",
+    "thumb": "gallery/s2-12-thumb.webp",
+    "title": "A flag above the capital",
+    "alt": "A flag above the capital"
+  },
+  {
+    "season": 2,
+    "src": "gallery/s2-16.webp",
+    "thumb": "gallery/s2-16-thumb.webp",
+    "title": "A desert settlement",
+    "alt": "A desert settlement"
+  },
+  {
+    "season": 2,
+    "src": "gallery/s2-05.webp",
+    "thumb": "gallery/s2-05-thumb.webp",
+    "title": "Sunset over the grand tower",
+    "alt": "Sunset over the grand tower"
+  },
+  {
+    "season": 2,
+    "src": "gallery/s2-01.webp",
+    "thumb": "gallery/s2-01-thumb.webp",
+    "title": "Guardian of the desert",
+    "alt": "Guardian of the desert"
+  },
+  {
+    "season": 2,
+    "src": "gallery/s2-22.webp",
+    "thumb": "gallery/s2-22-thumb.webp",
+    "title": "Friends at the portal",
+    "alt": "Friends at the portal"
+  },
+  {
+    "season": 2,
+    "src": "gallery/s2-02.webp",
+    "thumb": "gallery/s2-02-thumb.webp",
+    "title": "The green valley tower",
+    "alt": "The green valley tower"
+  },
+  {
+    "season": 2,
+    "src": "gallery/s2-06.webp",
+    "thumb": "gallery/s2-06-thumb.webp",
+    "title": "Skyline across the valley",
+    "alt": "Skyline across the valley"
+  },
+  {
+    "season": 2,
+    "src": "gallery/s2-15.webp",
+    "thumb": "gallery/s2-15-thumb.webp",
+    "title": "The monumental citadel",
+    "alt": "The monumental citadel"
+  },
+  {
+    "season": 2,
+    "src": "gallery/s2-00.webp",
+    "thumb": "gallery/s2-00-thumb.webp",
+    "title": "Aerial view of the circular city",
+    "alt": "Aerial view of the circular city"
+  },
+  {
+    "season": 2,
+    "src": "gallery/s2-03.webp",
+    "thumb": "gallery/s2-03-thumb.webp",
+    "title": "A monument in the morning mist",
+    "alt": "A monument in the morning mist"
+  },
+  {
+    "season": 2,
+    "src": "gallery/s2-11.webp",
+    "thumb": "gallery/s2-11-thumb.webp",
+    "title": "The circular wonder",
+    "alt": "The circular wonder"
+  },
+  {
+    "season": 2,
+    "src": "gallery/s2-18.webp",
+    "thumb": "gallery/s2-18-thumb.webp",
+    "title": "Fortress of frost",
+    "alt": "Fortress of frost"
+  },
+  {
+    "season": 2,
+    "src": "gallery/s2-20.webp",
+    "thumb": "gallery/s2-20-thumb.webp",
+    "title": "Fog over the kingdom",
+    "alt": "Fog over the kingdom"
+  },
+  {
+    "season": 2,
+    "src": "gallery/s2-24.webp",
+    "thumb": "gallery/s2-24-thumb.webp",
+    "title": "The golden stronghold",
+    "alt": "The golden stronghold"
+  },
+  {
+    "season": 2,
+    "src": "gallery/s2-25.webp",
+    "thumb": "gallery/s2-25-thumb.webp",
+    "title": "Between castle and sky",
+    "alt": "Between castle and sky"
+  },
+  {
+    "season": 2,
+    "src": "gallery/s2-26.webp",
+    "thumb": "gallery/s2-26-thumb.webp",
+    "title": "Sunset beneath the flag",
+    "alt": "Sunset beneath the flag"
+  },
+  {
     "season": 1,
-    "src": "gallery/s1-003.webp",
-    "thumb": "gallery/s1-003-thumb.webp",
-    "title": "The original crew"
+    "src": "gallery/s1-15.webp",
+    "thumb": "gallery/s1-15-thumb.webp",
+    "title": "The dragons of Season 1",
+    "alt": "The dragons of Season 1"
   },
   {
     "season": 1,
-    "src": "gallery/s1-010.webp",
-    "thumb": "gallery/s1-010-thumb.webp",
-    "title": "A world of imagination"
+    "src": "gallery/s1-19.webp",
+    "thumb": "gallery/s1-19-thumb.webp",
+    "title": "The WatanCraft sign",
+    "alt": "The WatanCraft sign"
   },
   {
     "season": 1,
-    "src": "gallery/s1-013.webp",
-    "thumb": "gallery/s1-013-thumb.webp",
-    "title": "A slice of Season 1"
+    "src": "gallery/s1-25.webp",
+    "thumb": "gallery/s1-25-thumb.webp",
+    "title": "A snapshot of the crew",
+    "alt": "A snapshot of the crew"
   },
   {
     "season": 1,
-    "src": "gallery/s1-019.webp",
-    "thumb": "gallery/s1-019-thumb.webp",
-    "title": "Built together"
+    "src": "gallery/s1-08.webp",
+    "thumb": "gallery/s1-08-thumb.webp",
+    "title": "Dragons above the city",
+    "alt": "Dragons above the city"
   },
   {
     "season": 1,
-    "src": "gallery/s1-022.webp",
-    "thumb": "gallery/s1-022-thumb.webp",
-    "title": "Good company"
+    "src": "gallery/s1-14.webp",
+    "thumb": "gallery/s1-14-thumb.webp",
+    "title": "A sky full of stories",
+    "alt": "A sky full of stories"
   },
   {
     "season": 1,
-    "src": "gallery/s1-023.webp",
-    "thumb": "gallery/s1-023-thumb.webp",
-    "title": "Life in the village"
+    "src": "gallery/s1-22.webp",
+    "thumb": "gallery/s1-22-thumb.webp",
+    "title": "A dragon in the distance",
+    "alt": "A dragon in the distance"
   },
   {
     "season": 1,
-    "src": "gallery/s1-024.webp",
-    "thumb": "gallery/s1-024-thumb.webp",
-    "title": "Golden-hour memories"
+    "src": "gallery/s1-20.webp",
+    "thumb": "gallery/s1-20-thumb.webp",
+    "title": "Among the cherry blossoms",
+    "alt": "Among the cherry blossoms"
   },
   {
     "season": 1,
-    "src": "gallery/s1-026.webp",
-    "thumb": "gallery/s1-026-thumb.webp",
-    "title": "After dark"
+    "src": "gallery/s1-09.webp",
+    "thumb": "gallery/s1-09-thumb.webp",
+    "title": "Dragons over the rooftops",
+    "alt": "Dragons over the rooftops"
   },
   {
     "season": 1,
-    "src": "gallery/s1-028.webp",
-    "thumb": "gallery/s1-028-thumb.webp",
-    "title": "Small details, big stories"
+    "src": "gallery/s1-17.webp",
+    "thumb": "gallery/s1-17-thumb.webp",
+    "title": "A life built together",
+    "alt": "A life built together"
   },
   {
     "season": 1,
-    "src": "gallery/s1-031.webp",
-    "thumb": "gallery/s1-031-thumb.webp",
-    "title": "Light up the night"
+    "src": "gallery/s1-13.webp",
+    "thumb": "gallery/s1-13-thumb.webp",
+    "title": "When dragons ruled",
+    "alt": "When dragons ruled"
   },
   {
     "season": 1,
-    "src": "gallery/s1-032.webp",
-    "thumb": "gallery/s1-032-thumb.webp",
-    "title": "The red tower"
+    "src": "gallery/s1-02.webp",
+    "thumb": "gallery/s1-02-thumb.webp",
+    "title": "The first shopping streets",
+    "alt": "The first shopping streets"
   },
   {
     "season": 1,
-    "src": "gallery/s1-036.webp",
-    "thumb": "gallery/s1-036-thumb.webp",
-    "title": "The shopping district"
+    "src": "gallery/s1-07.webp",
+    "thumb": "gallery/s1-07-thumb.webp",
+    "title": "The Watan market",
+    "alt": "The Watan market"
   },
   {
-    "season": 2,
-    "src": "gallery/s2-039.webp",
-    "thumb": "gallery/s2-039-thumb.webp",
-    "title": "A world worth building"
+    "season": 1,
+    "src": "gallery/s1-24.webp",
+    "thumb": "gallery/s1-24-thumb.webp",
+    "title": "Across the old town",
+    "alt": "Across the old town"
   },
   {
-    "season": 2,
-    "src": "gallery/s2-000.webp",
-    "thumb": "gallery/s2-000-thumb.webp",
-    "title": "Towers on the horizon"
+    "season": 1,
+    "src": "gallery/s1-10.webp",
+    "thumb": "gallery/s1-10-thumb.webp",
+    "title": "The world we started",
+    "alt": "The world we started"
   },
   {
-    "season": 2,
-    "src": "gallery/s2-003.webp",
-    "thumb": "gallery/s2-003-thumb.webp",
-    "title": "Guardians of the desert"
+    "season": 1,
+    "src": "gallery/s1-16.webp",
+    "thumb": "gallery/s1-16-thumb.webp",
+    "title": "The Season 1 skyline",
+    "alt": "The Season 1 skyline"
   },
   {
-    "season": 2,
-    "src": "gallery/s2-009.webp",
-    "thumb": "gallery/s2-009-thumb.webp",
-    "title": "The frozen frontier"
+    "season": 1,
+    "src": "gallery/s1-01.webp",
+    "thumb": "gallery/s1-01-thumb.webp",
+    "title": "A room full of memories",
+    "alt": "A room full of memories"
   },
   {
-    "season": 2,
-    "src": "gallery/s2-012.webp",
-    "thumb": "gallery/s2-012-thumb.webp",
-    "title": "Above the clouds"
+    "season": 1,
+    "src": "gallery/s1-04.webp",
+    "thumb": "gallery/s1-04-thumb.webp",
+    "title": "An unforgettable entrance",
+    "alt": "An unforgettable entrance"
   },
   {
-    "season": 2,
-    "src": "gallery/s2-016.webp",
-    "thumb": "gallery/s2-016-thumb.webp",
-    "title": "Gateway to the sky"
+    "season": 1,
+    "src": "gallery/s1-18.webp",
+    "thumb": "gallery/s1-18-thumb.webp",
+    "title": "Mysteries on the horizon",
+    "alt": "Mysteries on the horizon"
   },
   {
-    "season": 2,
-    "src": "gallery/s2-017.webp",
-    "thumb": "gallery/s2-017-thumb.webp",
-    "title": "A different perspective"
+    "season": 1,
+    "src": "gallery/s1-05.webp",
+    "thumb": "gallery/s1-05-thumb.webp",
+    "title": "The sky beyond the village",
+    "alt": "The sky beyond the village"
   },
   {
-    "season": 2,
-    "src": "gallery/s2-018.webp",
-    "thumb": "gallery/s2-018-thumb.webp",
-    "title": "Into the mist"
+    "season": 1,
+    "src": "gallery/s1-21.webp",
+    "thumb": "gallery/s1-21-thumb.webp",
+    "title": "Adventures with friends",
+    "alt": "Adventures with friends"
   },
   {
-    "season": 2,
-    "src": "gallery/s2-019.webp",
-    "thumb": "gallery/s2-019-thumb.webp",
-    "title": "Inspired by the East"
+    "season": 1,
+    "src": "gallery/s1-11.webp",
+    "thumb": "gallery/s1-11-thumb.webp",
+    "title": "The winter city",
+    "alt": "The winter city"
   },
   {
-    "season": 2,
-    "src": "gallery/s2-021.webp",
-    "thumb": "gallery/s2-021-thumb.webp",
-    "title": "A world of possibilities"
+    "season": 1,
+    "src": "gallery/s1-12.webp",
+    "thumb": "gallery/s1-12-thumb.webp",
+    "title": "Flight into the End",
+    "alt": "Flight into the End"
   },
   {
-    "season": 2,
-    "src": "gallery/s2-023.webp",
-    "thumb": "gallery/s2-023-thumb.webp",
-    "title": "Paths to adventure"
+    "season": 1,
+    "src": "gallery/s1-00.webp",
+    "thumb": "gallery/s1-00-thumb.webp",
+    "title": "Zako’s corner shop",
+    "alt": "Zako’s corner shop"
   },
   {
-    "season": 2,
-    "src": "gallery/s2-025.webp",
-    "thumb": "gallery/s2-025-thumb.webp",
-    "title": "At the heart of the world"
+    "season": 1,
+    "src": "gallery/s1-03.webp",
+    "thumb": "gallery/s1-03-thumb.webp",
+    "title": "The first gathering",
+    "alt": "The first gathering"
   },
   {
-    "season": 2,
-    "src": "gallery/s2-026.webp",
-    "thumb": "gallery/s2-026-thumb.webp",
-    "title": "Golden hour"
+    "season": 1,
+    "src": "gallery/s1-06.webp",
+    "thumb": "gallery/s1-06-thumb.webp",
+    "title": "Flying the Afghan flag",
+    "alt": "Flying the Afghan flag"
   },
   {
-    "season": 2,
-    "src": "gallery/s2-028.webp",
-    "thumb": "gallery/s2-028-thumb.webp",
-    "title": "Across the dunes"
+    "season": 1,
+    "src": "gallery/s1-23.webp",
+    "thumb": "gallery/s1-23-thumb.webp",
+    "title": "Our sense of humour",
+    "alt": "Our sense of humour"
   },
   {
-    "season": 2,
-    "src": "gallery/s2-030.webp",
-    "thumb": "gallery/s2-030-thumb.webp",
-    "title": "Kingdom of ice"
+    "season": 1,
+    "src": "gallery/s1-26.webp",
+    "thumb": "gallery/s1-26-thumb.webp",
+    "title": "Little corners of home",
+    "alt": "Little corners of home"
   },
   {
-    "season": 2,
-    "src": "gallery/s2-031.webp",
-    "thumb": "gallery/s2-031-thumb.webp",
-    "title": "The dragon\u2019s gate"
+    "season": 1,
+    "src": "gallery/s1-27.webp",
+    "thumb": "gallery/s1-27-thumb.webp",
+    "title": "The first headquarters",
+    "alt": "The first headquarters"
   },
   {
-    "season": 2,
-    "src": "gallery/s2-034.webp",
-    "thumb": "gallery/s2-034-thumb.webp",
-    "title": "Welcome to WatanCraft"
-  },
-  {
-    "season": 2,
-    "src": "gallery/s2-038.webp",
-    "thumb": "gallery/s2-038-thumb.webp",
-    "title": "Built to be remembered"
-  },
-  {
-    "season": 2,
-    "src": "gallery/s2-040.webp",
-    "thumb": "gallery/s2-040-thumb.webp",
-    "title": "Beyond the walls"
-  },
-  {
-    "season": 2,
-    "src": "gallery/s2-041.webp",
-    "thumb": "gallery/s2-041-thumb.webp",
-    "title": "Another adventure"
-  },
-  {
-    "season": 2,
-    "src": "gallery/s2-044.webp",
-    "thumb": "gallery/s2-044-thumb.webp",
-    "title": "A kingdom of your own"
-  },
-  {
-    "season": 2,
-    "src": "gallery/s2-045.webp",
-    "thumb": "gallery/s2-045-thumb.webp",
-    "title": "Proudly Afghan"
-  },
-  {
-    "season": 2,
-    "src": "gallery/s2-048.webp",
-    "thumb": "gallery/s2-048-thumb.webp",
-    "title": "Desert dreams"
+    "season": 1,
+    "src": "gallery/s1-28.webp",
+    "thumb": "gallery/s1-28-thumb.webp",
+    "title": "The earliest adventures",
+    "alt": "The earliest adventures"
   }
 ]
