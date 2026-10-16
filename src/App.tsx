@@ -154,20 +154,6 @@ const team = [
     avatar: "/Turachi.png",
   },
   {
-    name: "KakaKaloo",
-    role: "کو-اونر",
-    text: "از مدیران اصلی وطن‌کرفت",
-    link: "https://www.youtube.com/@KakaKaloo",
-    avatar: "/Kalim.jpg",
-  },
-  {
-    name: "Sayed",
-    role: "مدیر ارشد",
-    text: "مسئول مدیریت و نظارت کلی بر وطن‌کرفت که علاوه بر اختیارات کامل مدیریتی، به هاست سرور نیز دسترسی دارد.",
-    link: "https://www.tiktok.com/@sayed_1732?_r=1&_t=ZG-94fKl2GcX1F",
-    avatar: "/Sayed.jpg",
-  },
-  {
     name: "Samira",
     role: "قاضی",
     text: "ناظر بی‌طرف در تصمیم‌گیری‌های مهم وطن‌کرفت که در تعیین سیاست‌ها و نظارت بر عملکرد دولت نقش دارد.",
@@ -176,7 +162,7 @@ const team = [
   },
   {
     name: "Ali",
-    role: "OG",
+    role: "مدیر ارشد",
     text: "از جمله بنیان گذاران سرور وطن کرفت",
     link: "https://youtube.com/@itzrealace?si=rkavGl3sM6dPOxWj",
     avatar: "/Ali.png",
@@ -190,10 +176,10 @@ const team = [
   },
   {
     name: "MrRubik",
-    role: "ادمین",
+    role: "مدیر ارشد",
     text: "شخصی که فضای سرور و دیسکورد را امن، فعال و منظم نگه می‌دارد.",
     link: "https://discord.com/invite/f6YE5Fd3HG",
-    avatar: "/MrRubik.png",
+    avatar: "/MrRubik.jpg",
   },
 ];
 
