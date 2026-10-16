@@ -1,6 +1,6 @@
 # WatanCraft
 
-An English-language, responsive React + TypeScript website for WatanCraft. Dark emerald visual design, real player screenshots, two season galleries, accessible fullscreen viewer, world downloads, community recognition, team profiles, rules, and joining instructions.
+An English-language, responsive React + TypeScript website for WatanCraft. Bright Minecraft-inspired visual design with block typography, grass-and-dirt borders, and inventory-style panels, real player screenshots, two season galleries, accessible fullscreen viewer, world downloads, community recognition, team profiles, rules, and joining instructions.
 
 ## Develop and deploy
 
