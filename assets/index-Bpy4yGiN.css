@@ -4,7 +4,7 @@
 :root{--bg:#100c0a;--panel:#1b120f;--panel2:#271810;--ink:#fff6ed;--muted:#b8a9a0;--accent:#ffb82e;--line:rgba(255,185,99,.17)}
 body{background:#100c0a;color:#fff6ed}
 .hero{background:#1b120f}
-.hero-photo{object-position:58% 67%}
+.hero-photo{object-position:58% 8%}
 .hero-vignette{background:linear-gradient(90deg,rgba(13,7,5,.88) 0%,rgba(13,7,5,.66) 27%,rgba(13,7,5,.21) 62%,rgba(13,7,5,.13)),linear-gradient(0deg,rgba(13,7,5,.68),transparent 39%,rgba(13,7,5,.23))}
 .hero h1 em{color:#ffbd32}.brand b{color:#ffb82e}
 .btn-primary,.nav-cta,.season-pill,.join-bar{background:#ffb82e;color:#211006}
@@ -17,4 +17,4 @@ body{background:#100c0a;color:#fff6ed}
 button:focus-visible,a:focus-visible,summary:focus-visible{outline-color:#ffb82e}
 ::selection{background:#ffb82e;color:#211006}
 .skip{background:#ffb82e;color:#211006}
-@media(max-width:700px){.hero-photo{object-position:60% 62%}}
+@media(max-width:700px){.hero-photo{object-position:60% 12%}}
