@@ -1,73 +1,50 @@
-# React + TypeScript + Vite
+# WatanCraft
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An English-language, responsive React + TypeScript website for WatanCraft. Dark emerald visual design, real player screenshots, two season galleries, accessible fullscreen viewer, world downloads, community recognition, team profiles, rules, and joining instructions.
 
-Currently, two official plugins are available:
+## Develop and deploy
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- `npm ci`
+- `npm run dev`
+- `npm run build` — type-checks and builds `dist`, preserving the custom domain and legacy `/season/1` and `/season/2` links through the Pages fallback.
+- `npm run test:discord`
+- `npm run deploy` — publishes the build to the existing `gh-pages` branch. This changes the live website.
 
-## React Compiler
+The existing `watancraft.fun` custom domain uses root-relative assets. For hosting beneath a repository subpath, change the Vite base and routing before deployment.
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+## Content
 
-## Expanding the ESLint configuration
+- `src/App.tsx`: English copy, links, current team, and interactions.
+- `src/App.css`, `src/index.css`: responsive styles.
+- `src/gallery.json`: curated galleries (12 Season 1 and 23 Season 2 images).
+- `public/gallery`: compressed WebP display images and thumbnails from the two supplied archives. The original archives are unchanged. Not every uploaded screenshot is published; the Season 1 archive also contains desktop/interface captures and repeated views.
+- Existing Season 1 world and full gallery download URLs are preserved.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Discord avatars — required setup
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+This version requests `/staff` on the existing Worker and keeps the existing photos as fallbacks if Discord is unavailable. The five staff Discord user IDs supplied by the owner are configured in `server/discord-worker.mjs`. Ali is now displayed as MompAli (Senior Admin). **Live avatars will not activate until the Worker is deployed with its bot token and guild ID.** Identity is matched by Discord ID, never guessed from display names.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+1. Deploy `server/discord-worker.mjs` to the existing `purple-rice-956f.mozamelsaber.workers.dev` Cloudflare Worker. This is merged with the supplied S1 ranks Worker interface: the root health check, CORS, existing `/<ROLE_ID>` URLs, response fields, and environment variable names are preserved. Paste the entire file into the same Worker and deploy.
+2. Keep the existing Worker secret `DISCORD_TOKEN`. Never place a bot token in the frontend or commit it.
+3. Keep the existing `GUILD_ID` server ID.
+4. Staff IDs are already configured (see table below). No `STAFF_IDS` environment variable is needed. If an old `STAFF_IDS` variable exists, remove it to use the configured defaults, or update it with the exact keys shown below.
+5. Enable the bot's Server Members Intent for the Season 1 role-member list. The bot must belong to the guild.
+6. Verify `/staff` and `/1470843290307006588` return HTTP 200. Check the deployed site's avatars and hall of fame.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+The Worker keeps the existing role endpoint, scans all guild member pages, prefers server-specific avatars, falls back to account/default avatars, and caches successful responses for five minutes. Only public display fields are returned. The original public CORS policy is preserved. The website continues to apply its existing hidden-user list to the Season 1 display; the Worker returns all matching role members, as before.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Discord references: https://docs.discord.com/developers/resources/guild and https://docs.discord.com/developers/reference#image-formatting
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Verification limits
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Production build, type checking, gallery asset validation, and mocked Discord-worker tests can run locally. Live Discord integration requires the configuration above. Browser visual QA and live endpoint verification must be performed in a permitted browser environment before publishing.
+
+### Verified staff mapping
+
+| Display name | Discord user ID |
+| --- | --- |
+| TuraChi | 1175892534812221454 |
+| Zako | 868364926002036776 |
+| MompAli | 1421757876048756858 |
+| MrRubik | 1220254727862747144 |
+| Madisa | 1530227842816806973 |

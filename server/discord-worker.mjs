@@ -1,0 +1,74 @@
+// Deploy on the existing Cloudflare Worker, not GitHub Pages.
+// Required secrets/config: DISCORD_TOKEN, GUILD_ID.
+// STAFF_IDS is an optional JSON override; verified IDs are configured below.
+// Public responses contain only the fields used by the website.
+const ROLE = '1470843290307006588';
+export const STAFF_IDS = Object.freeze({
+ TuraChi: '1175892534812221454',
+ Zako: '868364926002036776',
+ MompAli: '1421757876048756858',
+ MrRubik: '1220254727862747144',
+ Madisa: '1530227842816806973',
+});
+const STAFF = Object.keys(STAFF_IDS);
+const snowflake = value => typeof value === 'string' && /^\d{17,20}$/.test(value);
+export function avatar(member, guildId) {
+ const user = member.user;
+ if (member.avatar) return `https://cdn.discordapp.com/guilds/${guildId}/users/${user.id}/avatars/${member.avatar}.webp?size=256`;
+ if (user.avatar) return `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.webp?size=256`;
+ const index = user.discriminator && user.discriminator !== '0' ? Number(user.discriminator) % 5 : Number((BigInt(user.id) >> 22n) % 6n);
+ return `https://cdn.discordapp.com/embed/avatars/${index}.png`;
+}
+function publicMember(member, guildId, key) {
+ return {id:member.user.id, name:member.nick || member.user.global_name || member.user.username, avatar:avatar(member,guildId), ...(key ? {key} : {})};
+}
+export async function roleMembers(api, guildId, roleId = ROLE) {
+ let after='0'; const found=[];
+ for(let page=0;page<100;page++) {
+  const members=await api(`/guilds/${guildId}/members?limit=1000&after=${after}`);
+  if(!Array.isArray(members))throw Error('Invalid Discord response');
+  for(const m of members)if(m.roles?.includes(roleId))found.push(publicMember(m,guildId));
+  if(members.length<1000)return found;
+  const next=members[members.length-1].user.id;
+  if(BigInt(next)<=BigInt(after))throw Error('Pagination did not advance');
+  after=next;
+ }
+ throw Error('Member pagination limit reached');
+}
+export default {
+ async fetch(request,env,ctx) {
+  const headers={'Content-Type':'application/json; charset=utf-8','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'GET, OPTIONS','Access-Control-Allow-Headers':'Content-Type','X-Content-Type-Options':'nosniff'};
+  if(request.method==='OPTIONS')return new Response(null,{status:204,headers:{...headers,'Access-Control-Allow-Methods':'GET, OPTIONS'}});
+  if(request.method!=='GET')return new Response('Method not allowed',{status:405,headers});
+  const path=new URL(request.url).pathname.replace(/\/$/,'');
+  const reply=(body,status=200)=>new Response(JSON.stringify(body),{status,headers});
+  if(!path)return reply({status:'ok',message:'Add /ROLE_ID for role members or /staff for staff avatars.'});
+  const roleId=path.slice(1);
+  if(path!=='/staff'&&!snowflake(roleId))return reply({error:'Not found'},404);
+  const token=env.DISCORD_TOKEN || env.DISCORD_BOT_TOKEN;
+  const guildId=env.GUILD_ID || env.DISCORD_GUILD_ID;
+  if(!token||!snowflake(guildId))return reply({error:'Set DISCORD_TOKEN and GUILD_ID in Worker settings'},503);
+  const cache=globalThis.caches?.default;
+  const cacheKey=new Request(new URL(path,request.url).href);
+  const cached=await cache?.match(cacheKey);
+  if(cached){const response=new Response(cached.body,cached);Object.entries(headers).forEach(([k,v])=>response.headers.set(k,v));return response;}
+  const api=async path=>{
+   const result=await fetch(`https://discord.com/api/v10${path}`,{headers:{Authorization:`Bot ${token}`},signal:AbortSignal.timeout(10000)});
+   if(!result.ok)throw Error(`Discord status ${result.status}`);
+   return result.json();
+  };
+  try {
+   let members;
+   if(path==='/staff') {
+    const ids=env.STAFF_IDS ? JSON.parse(env.STAFF_IDS) : STAFF_IDS;
+    if(!STAFF.every(key=>snowflake(ids[key])))return reply({error:'Staff Discord IDs must be configured'},503);
+    members=[];
+    for(const key of STAFF)members.push(publicMember(await api(`/guilds/${guildId}/members/${ids[key]}`),guildId,key));
+   } else members=await roleMembers(api,guildId,roleId);
+   const response=reply({count:members.length,members});
+   response.headers.set('Cache-Control','public, max-age=300');
+   if(cache){const stored=response.clone();stored.headers.delete('Access-Control-Allow-Origin');stored.headers.delete('Vary');ctx.waitUntil(cache.put(cacheKey,stored));}
+   return response;
+  }catch{return reply({error:'Discord is temporarily unavailable'},502);}
+ }
+};
