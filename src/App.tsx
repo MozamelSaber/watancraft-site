@@ -10,7 +10,7 @@ const ARCHIVE = 'https://www.dropbox.com/scl/fi/58t9r3yneqgajr7rfpb2o/Season-1-G
 const staff = [
   {name:'TuraChi', role:'Owner & Developer', image:'Turachi.png', text:'The vision. The world. The code.', link:'https://www.youtube.com/@TuraChi'},
   {name:'Zako', role:'Co-owner', image:'Zako.png', text:'Helping the community thrive.', link:DISCORD},
-  {name:'Ali', role:'Senior Admin', image:'Ali.png', text:'Here from the foundations.', link:'https://youtube.com/@itzrealace'},
+  {name:'MompAli', role:'Senior Admin', image:'Ali.png', text:'Here from the foundations.', link:'https://youtube.com/@itzrealace'},
   {name:'MrRubik', role:'Senior Admin', image:'MrRubik.jpg', text:'Keeping the adventure on track.', link:DISCORD},
   {name:'Madisa', role:'Game Master', image:'Madisa.png', text:'Making room for a little more fun.', link:DISCORD},
 ];

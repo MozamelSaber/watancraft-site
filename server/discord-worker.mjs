@@ -1,8 +1,16 @@
 // Deploy on the existing Cloudflare Worker, not GitHub Pages.
-// Secrets: DISCORD_BOT_TOKEN, DISCORD_GUILD_ID, STAFF_IDS (JSON name -> ID).
+// Required secrets/config: DISCORD_BOT_TOKEN, DISCORD_GUILD_ID.
+// STAFF_IDS is an optional JSON override; verified IDs are configured below.
 // Public responses contain only the fields used by the website.
 const ROLE = '1470843290307006588';
-const STAFF = ['TuraChi', 'Zako', 'Ali', 'MrRubik', 'Madisa'];
+export const STAFF_IDS = Object.freeze({
+ TuraChi: '1175892534812221454',
+ Zako: '868364926002036776',
+ MompAli: '1421757876048756858',
+ MrRubik: '1220254727862747144',
+ Madisa: '1530227842816806973',
+});
+const STAFF = Object.keys(STAFF_IDS);
 const HIDDEN = new Set(['1175892534812221454','868364926002036776','917410857695211540']);
 const ORIGINS = new Set(['https://watancraft.fun','https://www.watancraft.fun','https://mozamelsaber.github.io']);
 const snowflake = value => typeof value === 'string' && /^\d{17,20}$/.test(value);
@@ -53,7 +61,7 @@ export default {
   try {
    let members;
    if(path==='/staff') {
-    const ids=JSON.parse(env.STAFF_IDS||'{}');
+    const ids=env.STAFF_IDS ? JSON.parse(env.STAFF_IDS) : STAFF_IDS;
     if(!STAFF.every(key=>snowflake(ids[key])))return reply({error:'Staff Discord IDs must be configured'},503);
     members=[];
     for(const key of STAFF)members.push(publicMember(await api(`/guilds/${env.DISCORD_GUILD_ID}/members/${ids[key]}`),env.DISCORD_GUILD_ID,key));
